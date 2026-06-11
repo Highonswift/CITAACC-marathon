@@ -1,0 +1,120 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum MembershipType {
+  LIFETIME_MEMBER
+  FAMILY_OR_SPOUSE
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+}
+
+enum ParticipantCategory {
+  ADULT
+  KID
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum AttendanceStatus {
+  NOT_CHECKED_IN
+  PRESENT
+}
+
+enum TshirtStatus {
+  PENDING
+  DISTRIBUTED
+}
+
+model Registration {
+  id        String @id @default(cuid())
+  regCode   String @unique // e.g. REG2026-001
+
+  fullName String
+  email    String
+  mobile   String
+
+  membership MembershipType
+  batchYear  Int
+  department String
+
+  chennaiZone String
+
+  addressLine1 String
+  area         String
+  city         String
+  pincode      String
+
+  emergencyContactName   String
+  emergencyContactNumber String
+  medicalConditions      String?
+
+  healthDeclaration Boolean @default(false)
+  photoConsent      Boolean @default(false)
+
+  totalAmount   Int           @default(0) // in INR rupees
+  paymentStatus PaymentStatus @default(PENDING)
+
+  razorpayOrderId   String?
+  razorpayPaymentId String?
+  razorpaySignature String?
+  paidAt            DateTime?
+
+  participants Participant[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([paymentStatus])
+  @@index([chennaiZone])
+}
+
+model Participant {
+  id        String @id @default(cuid())
+  qrToken   String @unique @default(cuid())
+  bibNumber String @unique // e.g. CITAACC-0001
+
+  registration   Registration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+  registrationId String
+
+  category   ParticipantCategory
+  fullName   String
+  age        Int
+  gender     Gender
+  tshirtSize String
+  price      Int // in INR rupees
+
+  attendanceStatus    AttendanceStatus @default(NOT_CHECKED_IN)
+  attendanceAt        DateTime?
+  attendanceVolunteer String?
+
+  tshirtStatus    TshirtStatus @default(PENDING)
+  tshirtAt        DateTime?
+  tshirtVolunteer String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([registrationId])
+  @@index([attendanceStatus])
+  @@index([tshirtStatus])
+}
+
+// Atomic sequence source for human-friendly codes (reg codes & bib numbers).
+model Counter {
+  name  String @id
+  value Int    @default(0)
+}
