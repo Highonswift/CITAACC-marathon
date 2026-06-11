@@ -582,7 +582,7 @@ export default function RegistrationForm() {
           <div>
             <h2 className="text-lg font-semibold text-slate-900">2 · Participants</h2>
             <p className="mt-0.5 text-xs text-slate-500">
-              Add everyone walking with you — adults and kids.
+              Add everyone walking with you, including yourself — adults and kids
             </p>
           </div>
           <span className="chip bg-slate-100 text-slate-600">
@@ -671,6 +671,9 @@ export default function RegistrationForm() {
                     }
                     placeholder="Age"
                   />
+                  <p className="mt-1 text-xs text-slate-500">
+                    Kid: Age &lt; 18 years
+                  </p>
                 </div>
 
                 <div>

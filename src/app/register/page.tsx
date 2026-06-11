@@ -36,7 +36,7 @@ export default function RegisterPage() {
           Register for the {EVENT.shortName}
         </h1>
         <p className="mt-1.5 text-sm text-slate-600">
-          {EVENT.tagline} · {EVENT.date}
+          {EVENT.tagline} · {EVENT.date} . Chennai - Besant Nagar
         </p>
         <p className="mt-1 text-sm text-slate-500">
           Add yourself and your family in one go. It takes under two minutes.

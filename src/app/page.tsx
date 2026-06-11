@@ -77,7 +77,7 @@ export default function HomePage() {
           <div className="container-x relative py-16 sm:py-24">
             <div className="mx-auto max-w-3xl text-center">
               <span className="chip bg-white/15 text-white ring-1 ring-white/25 backdrop-blur">
-                {EVENT.date} · Chennai
+                {EVENT.date} · Chennai - Besant Nagar
               </span>
               <h1 className="mt-5 text-4xl font-black leading-[1.1] tracking-tight sm:text-6xl">
                 {EVENT.name}
