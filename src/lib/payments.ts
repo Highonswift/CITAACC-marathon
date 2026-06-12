@@ -43,7 +43,7 @@ export async function markRegistrationPaid(opts: {
         include: { participants: true },
       });
 
-  if (!alreadyPaid) {
+  if (alreadyPaid) {
     // Fire-and-forget confirmation email (console fallback when SMTP unset).
     sendMail({
       to: updated.email,
