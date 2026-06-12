@@ -138,7 +138,14 @@ export default function SuccessPage() {
           </ul>
         </div>
 
-        <div className="mt-8 text-center">
+        <div className="mt-8 flex flex-col items-center gap-3 text-center">
+          <p className="text-sm text-slate-500">
+            You can reopen your passes anytime at{" "}
+            <Link href="/my-registration" className="font-semibold text-brand-700 hover:underline">
+              Find My Registration
+            </Link>
+            .
+          </p>
           <Link href="/" className="text-sm font-medium text-brand-600 hover:text-brand-700">
             ← Back to Home
           </Link>

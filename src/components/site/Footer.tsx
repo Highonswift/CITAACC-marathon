@@ -63,6 +63,14 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link
+                  href="/my-registration"
+                  className="text-sm text-slate-600 transition hover:text-brand-700"
+                >
+                  Find My Registration
+                </Link>
+              </li>
+              <li>
                 <a
                   href="#contact"
                   className="text-sm text-slate-600 transition hover:text-brand-700"
