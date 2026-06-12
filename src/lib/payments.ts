@@ -44,9 +44,12 @@ export async function markRegistrationPaid(opts: {
       });
 
   if (!alreadyPaid) {
-    // Fire-and-forget confirmation email on the FIRST transition to PAID only
-    // (console fallback when SMTP unset). Prevents missed/duplicate emails.
-    sendMail({
+    // Send the confirmation email on the FIRST transition to PAID only.
+    // IMPORTANT: await it. On serverless (Vercel) the function is frozen the
+    // moment it returns, so a non-awaited "fire-and-forget" send gets killed
+    // before SMTP completes — which is why emails appeared to "not send".
+    // sendMail already swallows its own errors and falls back to console.
+    await sendMail({
       to: updated.email,
       subject: `Registration Confirmed – ${updated.regCode}`,
       html: registrationEmailHtml({
@@ -58,7 +61,7 @@ export async function markRegistrationPaid(opts: {
           token: p.qrToken,
         })),
       }),
-    }).catch(() => {});
+    });
   }
 
   return {
