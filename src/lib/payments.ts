@@ -43,8 +43,9 @@ export async function markRegistrationPaid(opts: {
         include: { participants: true },
       });
 
-  if (alreadyPaid) {
-    // Fire-and-forget confirmation email (console fallback when SMTP unset).
+  if (!alreadyPaid) {
+    // Fire-and-forget confirmation email on the FIRST transition to PAID only
+    // (console fallback when SMTP unset). Prevents missed/duplicate emails.
     sendMail({
       to: updated.email,
       subject: `Registration Confirmed – ${updated.regCode}`,
