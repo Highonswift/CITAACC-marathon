@@ -24,7 +24,6 @@ type Stats = {
     distributed: number;
     pending: number;
   };
-  zones: Record<string, number>;
 };
 
 type Participant = {
@@ -47,7 +46,6 @@ type Registration = {
   fullName: string;
   mobile: string;
   email?: string;
-  chennaiZone: string;
   totalAmount: number;
   paymentStatus: PaymentStatus;
   createdAt: string;
@@ -67,7 +65,6 @@ const EXPORTS: { type: string; label: string }[] = [
   { type: "attendance", label: "Attendance" },
   { type: "tshirt", label: "T-Shirts" },
   { type: "revenue", label: "Revenue" },
-  { type: "zones", label: "Zones" },
 ];
 
 function pct(part: number, total: number): number {
@@ -221,11 +218,6 @@ export default function AdminDashboard() {
   const att = stats?.attendance;
   const tshirt = stats?.tshirt;
 
-  const sortedZones = useMemo(() => {
-    if (!stats?.zones) return [];
-    return Object.entries(stats.zones).sort((a, b) => b[1] - a[1]);
-  }, [stats?.zones]);
-  const maxZone = sortedZones.length ? sortedZones[0][1] : 0;
 
   const sortedSizes = useMemo(() => {
     if (!tshirt?.bySize) return [];
@@ -411,37 +403,6 @@ export default function AdminDashboard() {
         </div>
       </section>
 
-      {/* CHENNAI ZONE ANALYTICS */}
-      <section>
-        <h2 className="mb-3 text-lg font-bold text-slate-900">
-          Chennai Zone Analytics
-        </h2>
-        <div className="card">
-          {sortedZones.length === 0 ? (
-            <p className="text-sm text-slate-500">No data yet.</p>
-          ) : (
-            <div className="space-y-2">
-              {sortedZones.map(([zone, count]) => (
-                <div key={zone} className="flex items-center gap-3">
-                  <span className="w-32 shrink-0 truncate text-sm font-medium text-slate-700 sm:w-40">
-                    {zone}
-                  </span>
-                  <div className="h-3 flex-1 overflow-hidden rounded-full bg-slate-100">
-                    <div
-                      className="h-full rounded-full bg-accent-500"
-                      style={{ width: `${pct(count, maxZone)}%` }}
-                    />
-                  </div>
-                  <span className="w-8 shrink-0 text-right text-sm font-semibold text-slate-900">
-                    {count}
-                  </span>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
-
       {/* REPORTS & EXPORTS */}
       <section>
         <h2 className="mb-3 text-lg font-bold text-slate-900">
@@ -507,7 +468,6 @@ export default function AdminDashboard() {
                       <th className="px-2 py-2">Reg Code</th>
                       <th className="px-2 py-2">Name</th>
                       <th className="px-2 py-2">Mobile</th>
-                      <th className="px-2 py-2">Zone</th>
                       <th className="px-2 py-2 text-center">#</th>
                       <th className="px-2 py-2 text-right">Amount</th>
                       <th className="px-2 py-2">Payment</th>
@@ -622,7 +582,6 @@ function RegRow({
         </td>
         <td className="px-2 py-2">{reg.fullName}</td>
         <td className="px-2 py-2">{reg.mobile}</td>
-        <td className="px-2 py-2">{reg.chennaiZone}</td>
         <td className="px-2 py-2 text-center">{reg.participants.length}</td>
         <td className="px-2 py-2 text-right">{formatINR(reg.totalAmount)}</td>
         <td className="px-2 py-2">
@@ -673,7 +632,6 @@ function RegCard({
         <PaymentChip status={reg.paymentStatus} />
       </div>
       <div className="mt-2 grid grid-cols-2 gap-1 text-xs text-slate-600">
-        <span>Zone: {reg.chennaiZone}</span>
         <span>Participants: {reg.participants.length}</span>
         <span>Amount: {formatINR(reg.totalAmount)}</span>
         <span>{fmtDate(reg.createdAt)}</span>

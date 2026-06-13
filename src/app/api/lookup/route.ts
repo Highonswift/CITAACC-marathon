@@ -84,7 +84,6 @@ export async function POST(req: Request) {
       fullName: registration.fullName,
       email: registration.email,
       mobile: registration.mobile,
-      chennaiZone: registration.chennaiZone,
       paymentStatus: registration.paymentStatus,
       totalAmount: registration.totalAmount,
       createdAt: registration.createdAt,

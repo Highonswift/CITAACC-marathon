@@ -4,7 +4,6 @@ import { useId, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   ADULT_TSHIRT_SIZES,
-  CHENNAI_ZONES,
   DEPARTMENTS,
   GENDERS,
   KID_TSHIRT_SIZES,
@@ -28,7 +27,6 @@ type Details = {
   membership: string;
   batchYear: string;
   department: string;
-  chennaiZone: string;
   addressLine1: string;
   area: string;
   city: string;
@@ -84,7 +82,6 @@ const initialDetails: Details = {
   membership: MEMBERSHIP_OPTIONS[0].value,
   batchYear: "",
   department: "",
-  chennaiZone: "",
   addressLine1: "",
   area: "",
   city: "",
@@ -209,7 +206,6 @@ export default function RegistrationForm() {
       membership: details.membership,
       batchYear: Number(details.batchYear),
       department: details.department,
-      chennaiZone: details.chennaiZone || undefined,
       addressLine1: details.addressLine1.trim(),
       area: details.area.trim(),
       city: details.city.trim(),
@@ -495,24 +491,6 @@ export default function RegistrationForm() {
             </select>
           </div>
 
-          <div>
-            <label className="label" htmlFor="chennaiZone">
-              Chennai Zone
-            </label>
-            <select
-              id="chennaiZone"
-              className="field"
-              value={details.chennaiZone}
-              onChange={(e) => setField("chennaiZone", e.target.value)}
-            >
-              <option value="">Select zone (optional)</option>
-              {CHENNAI_ZONES.map((z) => (
-                <option key={z} value={z}>
-                  {z}
-                </option>
-              ))}
-            </select>
-          </div>
 
           <div className="sm:col-span-2">
             <label className="label" htmlFor="addressLine1">
@@ -934,7 +912,6 @@ export default function RegistrationForm() {
                 <p className="text-slate-600">+91 {details.mobile}</p>
                 <p className="mt-1 text-slate-500">
                   CIT {details.batchYear} · {details.department}
-                  {details.chennaiZone ? ` · ${details.chennaiZone}` : ""}
                 </p>
                 <p className="text-slate-500">
                   {details.addressLine1}, {details.area}, {details.city} -{" "}

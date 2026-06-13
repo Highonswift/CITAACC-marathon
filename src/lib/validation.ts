@@ -1,7 +1,6 @@
 import { z } from "zod";
 import {
   DEPARTMENTS,
-  CHENNAI_ZONES,
   ADULT_TSHIRT_SIZES,
   KID_TSHIRT_SIZES,
 } from "./constants";
@@ -30,7 +29,6 @@ export const registrationSchema = z.object({
     .min(1950, "Enter a valid year")
     .max(2030, "Enter a valid year"),
   department: z.enum(DEPARTMENTS as unknown as [string, ...string[]]),
-  chennaiZone: z.enum(CHENNAI_ZONES as unknown as [string, ...string[]]),
   addressLine1: z.string().trim().min(1, "Address is required").max(200),
   area: z.string().trim().min(1, "Area / locality is required").max(120),
   city: z.string().trim().min(1, "City is required").max(80),

@@ -1,0 +1,29 @@
+# =====================================================================
+#  DEVELOPMENT environment (local machine only — gitignored, never pushed)
+#  Production values live ONLY in Vercel → Settings → Environment Variables.
+#  See docs/ENVIRONMENTS.md for the full dev vs prod mapping.
+# =====================================================================
+
+# ----- Database: Neon #1 = DEV database -----
+DATABASE_URL="postgresql://neondb_owner:npg_pvQSM34riUGo@ep-blue-art-ai0ukso5-pooler.c-4.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+
+# ----- Public site (DEV — local). Production sets this in Vercel to https://events.citaacc.com -----
+NEXT_PUBLIC_BASE_URL="https://events.citaacc.com"
+
+# ----- Razorpay -----
+# Leave the secret blank to run in MOCK payment mode (no real charge) for local testing.
+RAZORPAY_KEY_ID="rzp_live_R7VC5o2JZWsYcX"
+RAZORPAY_KEY_SECRET="v9Iq2bWSN7gnIq7aXLZc2z1F"
+NEXT_PUBLIC_RAZORPAY_KEY_ID="rzp_live_R7VC5o2JZWsYcX"
+RAZORPAY_WEBHOOK_SECRET="CITAACC_5K"
+
+# ----- Access control (simple passcodes) -----
+ADMIN_PASSCODE="citaacc-admin-2026"
+VOLUNTEER_PASSCODE="citaacc-volunteer-2026"
+
+# ----- Email (optional, SMTP). Leave blank to log emails to console instead. -----
+SMTP_HOST="smtp.gmail.com"
+SMTP_PORT="587"
+SMTP_USER="citaachennaichapter@gmail.com"
+SMTP_PASS="fsdz tvwu jmji tisp"
+SMTP_FROM="CITAACC 5K <citaachennaichapter@gmail.com>"

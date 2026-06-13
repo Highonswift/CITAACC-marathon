@@ -40,7 +40,6 @@ export async function POST(req: Request) {
         membership: data.membership,
         batchYear: data.batchYear,
         department: data.department,
-        chennaiZone: data.chennaiZone,
         addressLine1: data.addressLine1,
         area: data.area,
         city: data.city,

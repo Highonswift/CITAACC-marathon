@@ -20,7 +20,6 @@ type Registration = {
   fullName: string;
   email: string;
   mobile: string;
-  chennaiZone: string;
   paymentStatus: "PAID" | "PENDING" | "FAILED";
   totalAmount: number;
   createdAt: string;
@@ -172,7 +171,6 @@ export default function MyRegistrationPage() {
             <div className="grid grid-cols-2 gap-3 text-sm">
               <Info label="Name" value={registration.fullName} />
               <Info label="Mobile" value={registration.mobile} />
-              <Info label="Zone" value={registration.chennaiZone} />
               <Info label="Amount" value={formatINR(registration.totalAmount)} />
             </div>
 

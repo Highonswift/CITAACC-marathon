@@ -30,11 +30,11 @@ export async function GET(req: Request) {
     csv = toCsv(
       [
         "Reg Code", "Name", "Email", "Mobile", "Membership", "Batch", "Department",
-        "Zone", "City", "Pincode", "Participants", "Amount", "Payment", "Created",
+        "City", "Pincode", "Participants", "Amount", "Payment", "Created",
       ],
       regs.map((r) => [
         r.regCode, r.fullName, r.email, r.mobile, r.membership, r.batchYear,
-        r.department, r.chennaiZone, r.city, r.pincode, r._count.participants,
+        r.department, r.city, r.pincode, r._count.participants,
         r.totalAmount, r.paymentStatus, r.createdAt.toISOString(),
       ])
     );
@@ -46,13 +46,13 @@ export async function GET(req: Request) {
     csv = toCsv(
       [
         "Bib", "Name", "Category", "Age", "Gender", "T-Shirt Size", "Reg Code",
-        "Payer", "Mobile", "Zone", "Attendance", "Attendance At", "Attendance By",
+        "Payer", "Mobile", "Attendance", "Attendance At", "Attendance By",
         "T-Shirt Status", "T-Shirt At", "T-Shirt By",
       ],
       parts.map((p) => [
         p.bibNumber, p.fullName, p.category, p.age, p.gender, p.tshirtSize,
         p.registration.regCode, p.registration.fullName, p.registration.mobile,
-        p.registration.chennaiZone, p.attendanceStatus,
+        p.attendanceStatus,
         p.attendanceAt?.toISOString() || "", p.attendanceVolunteer || "",
         p.tshirtStatus, p.tshirtAt?.toISOString() || "", p.tshirtVolunteer || "",
       ])
@@ -68,17 +68,6 @@ export async function GET(req: Request) {
         r.regCode, r.fullName, r.totalAmount, r.razorpayPaymentId || "",
         r.paidAt?.toISOString() || "",
       ])
-    );
-  } else if (type === "zones") {
-    const groups = await prisma.registration.groupBy({
-      by: ["chennaiZone"],
-      where: { paymentStatus: "PAID" },
-      _count: { _all: true },
-      _sum: { totalAmount: true },
-    });
-    csv = toCsv(
-      ["Zone", "Registrations", "Revenue"],
-      groups.map((g) => [g.chennaiZone, g._count._all, g._sum.totalAmount || 0])
     );
   } else {
     return new Response("Unknown export type", { status: 400 });

@@ -20,7 +20,6 @@ export async function GET() {
     checkedIn,
     tshirtDistributed,
     tshirtGroups,
-    zoneGroups,
   ] = await Promise.all([
     prisma.registration.count(),
     prisma.registration.count({ where: { paymentStatus: "PAID" } }),
@@ -39,20 +38,12 @@ export async function GET() {
       where: paidWhere,
       _count: { _all: true },
     }),
-    prisma.registration.groupBy({
-      by: ["chennaiZone"],
-      where: { paymentStatus: "PAID" },
-      _count: { _all: true },
-    }),
   ]);
 
   const revenue = revenueAgg._sum.totalAmount || 0;
 
   const tshirtBySize: Record<string, number> = {};
   for (const g of tshirtGroups) tshirtBySize[g.tshirtSize] = g._count._all;
-
-  const zoneCounts: Record<string, number> = {};
-  for (const g of zoneGroups) zoneCounts[g.chennaiZone] = g._count._all;
 
   return NextResponse.json({
     registration: {
@@ -74,6 +65,5 @@ export async function GET() {
       distributed: tshirtDistributed,
       pending: totalParticipants - tshirtDistributed,
     },
-    zones: zoneCounts,
   });
 }

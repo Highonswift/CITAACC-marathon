@@ -3,10 +3,6 @@ import { formatRegCode, formatBibNumber } from "../src/lib/counters";
 
 const prisma = new PrismaClient();
 
-const ZONES = [
-  "North Chennai", "South Chennai", "Central Chennai", "OMR / ECR",
-  "Tambaram Region", "Chengalpattu Region", "West Chennai",
-];
 const DEPTS = ["CSE", "ECE", "EEE", "Mechanical", "IT", "MCA", "MBA"];
 const ADULT_SIZES = ["S", "M", "L", "XL", "XXL"];
 const KID_SIZES = ["6-7 Yrs", "8-9 Yrs", "10-11 Yrs", "Adult XS"];
@@ -50,7 +46,6 @@ async function main() {
         membership: i % 3 === 0 ? "FAMILY_OR_SPOUSE" : "LIFETIME_MEMBER",
         batchYear: 2005 + (i % 15),
         department: pick(DEPTS, i),
-        chennaiZone: pick(ZONES, i),
         addressLine1: `${10 + i}, Gandhi Street`,
         area: "Anna Nagar",
         city: "Chennai",
