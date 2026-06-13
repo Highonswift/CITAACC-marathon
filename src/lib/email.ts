@@ -57,6 +57,26 @@ export async function verifyEmailConnection(): Promise<{ ok: boolean; error?: st
   }
 }
 
+// Diagnostic: actually attempt a send and return the REAL error (does not
+// swallow it like sendMail does). Used by the admin test-email endpoint.
+export async function sendTestEmail(
+  to: string
+): Promise<{ ok: boolean; from: string; error?: string; messageId?: string }> {
+  const tx = getTransport();
+  if (!tx) return { ok: false, from: FROM, error: "SMTP not configured (no SMTP_HOST)" };
+  try {
+    const info = await tx.sendMail({
+      from: FROM,
+      to,
+      subject: "CITAACC 5K — test email",
+      html: "<p>This is a test email from the CITAACC 5K portal. If you received it, email delivery is working.</p>",
+    });
+    return { ok: true, from: FROM, messageId: info.messageId };
+  } catch (err) {
+    return { ok: false, from: FROM, error: err instanceof Error ? err.message : String(err) };
+  }
+}
+
 function stripHtml(html: string): string {
   return html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
 }
