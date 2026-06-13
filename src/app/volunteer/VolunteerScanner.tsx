@@ -387,13 +387,15 @@ export default function VolunteerScanner() {
           <form onSubmit={handleManualLookup} className="space-y-3">
             <div>
               <label htmlFor="manual-token" className="label">
-                Enter token or bib link
+                Enter bib number, or paste a pass link
               </label>
               <input
                 id="manual-token"
                 type="text"
+                inputMode="text"
+                autoCapitalize="characters"
                 className="field"
-                placeholder="Paste pass link or token"
+                placeholder="e.g. CITAACC-0023 (or 23), or a pass link"
                 value={manualInput}
                 onChange={(e) => setManualInput(e.target.value)}
               />

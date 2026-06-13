@@ -1,15 +1,21 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-// Lookup a participant by QR token. Used by the volunteer portal and pass page.
+// Lookup a participant by QR token OR bib number. Used by the volunteer portal
+// (manual entry can be a token, a pass link, or a bib like CITAACC-0023).
 export async function GET(
   _req: Request,
   { params }: { params: Promise<{ token: string }> }
 ) {
   const { token } = await params;
 
-  const participant = await prisma.participant.findUnique({
-    where: { qrToken: token },
+  const participant = await prisma.participant.findFirst({
+    where: {
+      OR: [
+        { qrToken: token },
+        { bibNumber: { equals: token, mode: "insensitive" } },
+      ],
+    },
     include: {
       registration: {
         select: {

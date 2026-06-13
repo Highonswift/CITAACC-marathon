@@ -29,9 +29,15 @@ export async function qrDataUrl(token: string): Promise<string> {
 export function parseScannedToken(raw: string): string | null {
   const text = raw.trim();
   if (!text) return null;
+  // 1. A pass URL → extract the token.
   const match = text.match(/\/pass\/([A-Za-z0-9_-]+)/);
   if (match) return match[1];
-  // Fall back to treating the whole string as a token.
+  // 2. A bib number, in any form a volunteer might type:
+  //    "CITAACC-0023", "citaacc 23", or a bare "23" → normalize to "CITAACC-0023".
+  const bib = text.match(/^citaacc[-\s]?0*(\d{1,5})$/i);
+  if (bib) return `CITAACC-${bib[1].padStart(4, "0")}`;
+  if (/^\d{1,5}$/.test(text)) return `CITAACC-${text.padStart(4, "0")}`;
+  // 3. Otherwise treat the whole string as a raw QR token.
   if (/^[A-Za-z0-9_-]{8,}$/.test(text)) return text;
   return null;
 }
